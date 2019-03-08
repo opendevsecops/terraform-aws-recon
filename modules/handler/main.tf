@@ -58,6 +58,8 @@ module "main" {
   name        = "${local.common_prefix}recon_handler"
   role_name   = "${local.common_prefix}recon_handler_role"
 
+  timeout = 300
+
   environment {
     CLUSTER_ARN           = "${local.cluster_arn}"
     CLUSTER_VPC_SUBNET_ID = "${local.cluster_vpc_subnet_id}"
