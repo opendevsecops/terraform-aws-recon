@@ -61,7 +61,7 @@ exports.handler = async(event) => {
         taskDefinition
     }
 
-    await Promise.all(Object.entries(targets).map(([name, { brands = '', domains = '', urls = '' }]) => {
-        return launchJob(name, { BRANDS: brands, DOMAINS: domains, URLS: urls }, config)
-    }))
+    for (const [name, { brands = '', domains = '', urls = '' }] of Object.entries(targets)) {
+        await launchJob(name, { BRANDS: brands, DOMAINS: domains, URLS: urls }, config)
+    }
 }
