@@ -47,12 +47,30 @@ const launchJob = async(name, env, config) => {
     await launchTask(taskDefinition, {
         ...env,
 
-        LATEST: `s3://${bucket}/${bucketPrefix}${name}/last.network`,
+        LAST: `s3://${bucket}/${bucketPrefix}${name}/last.network`,
         DIFF: `s3://${bucket}/${bucketPrefix}${name}/diff.network`
     })
 }
 
-exports.handler = async(event) => {
+const launch = async(event) => {
+    const { bucket = process.env.BUCKET, bucketPrefix = process.env.BUCKET_PREFIX, taskDefinition = process.env.TASK_DEFINITION, target } = event
+
+    if (!targets[target]) {
+        throw new Error(`Unrecognized target ${target}`)
+    }
+
+    const config = {
+        bucket,
+        bucketPrefix,
+        taskDefinition
+    }
+
+    const { brands = '', domains = '', urls = '' } = targets[target]
+
+    await launchJob(target, { BRANDS: brands, DOMAINS: domains, URLS: urls }, config)
+}
+
+const schedule = async(event) => {
     const { bucket = process.env.BUCKET, bucketPrefix = process.env.BUCKET_PREFIX, taskDefinition = process.env.TASK_DEFINITION } = event
 
     const config = {
@@ -61,7 +79,22 @@ exports.handler = async(event) => {
         taskDefinition
     }
 
-    for (const [name, { brands = '', domains = '', urls = '' }] of Object.entries(targets)) {
-        await launchJob(name, { BRANDS: brands, DOMAINS: domains, URLS: urls }, config)
+    for (const [target, { brands = '', domains = '', urls = '' }] of Object.entries(targets)) {
+        await launchJob(target, { BRANDS: brands, DOMAINS: domains, URLS: urls }, config)
+    }
+}
+
+exports.handler = async(event) => {
+    const { op, ...rest } = event
+
+    switch (op) {
+        case 'launch':
+            return launch(rest)
+
+        case 'schedule':
+            return schedule(rest)
+
+        default:
+            throw new Error(`Unrecognized op ${op}`)
     }
 }

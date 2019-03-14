@@ -1,3 +1,3 @@
 remote.tf
 modules/*/build
-modules/*/targets.json
+modules/handler/src/targets.json
