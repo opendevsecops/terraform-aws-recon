@@ -1,0 +1,15 @@
+{
+    "uber": {
+        "description": "Bug bounty program for uber",
+
+        "brands": "uber",
+        "domains": "uber.com"
+    },
+
+    "linkedin": {
+        "description": "Bug bounty program for linkedin",
+
+        "brands": "linkedin",
+        "domains": "linkedin.com"
+    }
+}

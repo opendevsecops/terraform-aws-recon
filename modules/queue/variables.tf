@@ -1,14 +1,6 @@
-variable "targets" {}
+variable "launcher_arn" {}
 
-variable "bucket" {}
-
-variable "bucket_prefix" {}
-
-variable "task_definition" {}
-
-variable "queue_id" {}
-
-variable "queue_arn" {}
+variable "launcher_role_name" {}
 
 variable "common_prefix" {
   default = "opendevsecops_"

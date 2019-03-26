@@ -6,9 +6,9 @@ variable "bucket_prefix" {}
 
 variable "task_definition" {}
 
-variable "queue_id" {}
+variable "cluster_arn" {}
 
-variable "queue_arn" {}
+variable "cluster_vpc_subnet_id" {}
 
 variable "common_prefix" {
   default = "opendevsecops_"

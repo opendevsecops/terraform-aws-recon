@@ -30,9 +30,27 @@ module "handler" {
   bucket        = "${local.bucket}"
   bucket_prefix = "${local.bucket_prefix}"
 
+  task_definition = "${module.task.name}"
+
+  queue_id  = "${module.queue.id}"
+  queue_arn = "${module.queue.arn}"
+
   targets = "${local.targets}"
 
+  common_prefix = "${local.common_prefix}"
+
+  tags = "${local.tags}"
+}
+
+module "launcher" {
+  source = "../launcher"
+
+  bucket        = "${local.bucket}"
+  bucket_prefix = "${local.bucket_prefix}"
+
   task_definition = "${module.task.name}"
+
+  targets = "${local.targets}"
 
   cluster_arn           = "${local.cluster_arn}"
   cluster_vpc_subnet_id = "${local.cluster_vpc_subnet_id}"
@@ -48,6 +66,17 @@ module "schedule" {
   schedule = "${local.schedule}"
 
   handler_arn = "${module.handler.arn}"
+
+  common_prefix = "${local.common_prefix}"
+
+  tags = "${local.tags}"
+}
+
+module "queue" {
+  source = "../queue"
+
+  launcher_arn       = "${module.launcher.arn}"
+  launcher_role_name = "${module.launcher.role_name}"
 
   common_prefix = "${local.common_prefix}"
 
