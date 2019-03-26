@@ -51,7 +51,6 @@ const launchJob = async(name, options, config, env = {}) => {
 
         POWN_OUTPUT_FORMAT: 'csv',
 
-        CURR: `s3://${bucket}/${bucketPrefix}${name}/${Date.now()}.network`,
         LAST: `s3://${bucket}/${bucketPrefix}${name}/last.network`,
         DIFF: `s3://${bucket}/${bucketPrefix}${name}/diff.network`,
 
