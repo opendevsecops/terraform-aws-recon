@@ -1,3 +1,4 @@
+.terraform
 remote.tf
 modules/*/build
 modules/handler/src/targets.json
