@@ -11,9 +11,34 @@ locals {
 
   public_ip = "${var.public_ip}"
 
+  environment = "${var.environment}"
+
   common_prefix = "${var.common_prefix}"
 
   tags = "${var.tags}"
+}
+
+locals {
+  external_environment = "${var.environment}"
+
+  internal_environment = {
+    CLUSTER_ARN           = "${local.cluster_arn}"
+    CLUSTER_VPC_SUBNET_ID = "${local.cluster_vpc_subnet_id}"
+
+    PUBLIC_IP = "${local.public_ip ? "true" : "false"}"
+
+    TASK_ROLE_ARN      = "${module.roles.task_role_arn}"
+    EXECUTION_ROLE_ARN = "${module.roles.execution_role_arn}"
+
+    TASK_DEFINITION = "${local.task_definition}"
+
+    BUCKET        = "${local.bucket}"
+    BUCKET_PREFIX = "${local.bucket_prefix}"
+  }
+}
+
+locals {
+  final_environment = "${merge(local.external_environment, local.internal_environment)}"
 }
 
 module "roles" {
@@ -62,20 +87,7 @@ module "main" {
 
   timeout = 300
 
-  environment {
-    CLUSTER_ARN           = "${local.cluster_arn}"
-    CLUSTER_VPC_SUBNET_ID = "${local.cluster_vpc_subnet_id}"
-
-    PUBLIC_IP = "${local.public_ip ? "true" : "false"}"
-
-    TASK_ROLE_ARN      = "${module.roles.task_role_arn}"
-    EXECUTION_ROLE_ARN = "${module.roles.execution_role_arn}"
-
-    TASK_DEFINITION = "${local.task_definition}"
-
-    BUCKET        = "${local.bucket}"
-    BUCKET_PREFIX = "${local.bucket_prefix}"
-  }
+  environment = "${local.final_environment}"
 
   tags = "${local.tags}"
 

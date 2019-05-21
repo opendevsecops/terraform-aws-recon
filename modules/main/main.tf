@@ -13,6 +13,9 @@ locals {
 
   public_ip = "${var.public_ip}"
 
+  handler_environment  = "${var.handler_environment}"
+  launcher_environment = "${var.launcher_environment}"
+
   common_prefix = "${var.common_prefix}"
 
   tags = "${var.tags}"
@@ -39,6 +42,8 @@ module "handler" {
 
   targets = "${local.targets}"
 
+  environment = "${local.handler_environment}"
+
   common_prefix = "${local.common_prefix}"
 
   tags = "${local.tags}"
@@ -58,6 +63,8 @@ module "launcher" {
   cluster_vpc_subnet_id = "${local.cluster_vpc_subnet_id}"
 
   public_ip = "${local.public_ip}"
+
+  environment = "${local.launcher_environment}"
 
   common_prefix = "${local.common_prefix}"
 

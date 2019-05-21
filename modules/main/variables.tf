@@ -28,6 +28,14 @@ variable "public_ip" {
   default = false
 }
 
+variable "handler_environment" {
+  default = {}
+}
+
+variable "launcher_environment" {
+  default = {}
+}
+
 variable "common_prefix" {
   default = "opendevsecops_"
 }

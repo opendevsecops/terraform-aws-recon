@@ -4,6 +4,8 @@ const targets = require('./targets')
 
 const ecs = new awsSdk.ECS()
 
+const envPrefix = 'JOB_'
+
 const launchTask = async(name, env) => {
     console.log(`Launching task ${name}`)
 
@@ -56,7 +58,13 @@ const launchJob = async(name, options, config, env = {}) => {
 
         BRANDS: brands,
         DOMAINS: domains,
-        URLS: urls
+        URLS: urls,
+
+        ...Object.assign({}, ...Object.entries(process.env).filter(([name]) => name.startsWith(envPrefix)).map(([name, value]) => {
+            return {
+                [name.slice(envPrefix.length)]: value
+            }
+        }))
     })
 }
 

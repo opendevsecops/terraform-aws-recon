@@ -10,6 +10,10 @@ variable "queue_id" {}
 
 variable "queue_arn" {}
 
+variable "environment" {
+  default = {}
+}
+
 variable "common_prefix" {
   default = "opendevsecops_"
 }

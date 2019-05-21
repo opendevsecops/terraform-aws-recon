@@ -9,9 +9,29 @@ locals {
   queue_id  = "${var.queue_id}"
   queue_arn = "${var.queue_arn}"
 
+  environment = "${var.environment}"
+
   common_prefix = "${var.common_prefix}"
 
   tags = "${var.tags}"
+}
+
+locals {
+  external_environment = "${var.environment}"
+
+  internal_environment = {
+    BUCKET        = "${local.bucket}"
+    BUCKET_PREFIX = "${local.bucket_prefix}"
+
+    TASK_DEFINITION = "${local.task_definition}"
+
+    QUEUE_ID  = "${local.queue_id}"
+    QUEUE_ARN = "${local.queue_arn}"
+  }
+}
+
+locals {
+  final_environment = "${merge(local.external_environment, local.internal_environment)}"
 }
 
 module "targets_json" {
@@ -33,15 +53,7 @@ module "main" {
 
   timeout = 300
 
-  environment {
-    BUCKET        = "${local.bucket}"
-    BUCKET_PREFIX = "${local.bucket_prefix}"
-
-    TASK_DEFINITION = "${local.task_definition}"
-
-    QUEUE_ID  = "${local.queue_id}"
-    QUEUE_ARN = "${local.queue_arn}"
-  }
+  environment = "${local.final_environment}"
 
   tags = "${local.tags}"
 
