@@ -28,19 +28,10 @@ variable "cluster_vpc_subnet_cidr_block" {
   default = "10.52.52.0/24"
 }
 
+variable "public_ip" {
+  default = false
+}
+
 variable "common_prefix" {
   default = "opendevsecops_"
-}
-
-variable "tags" {
-  default = {
-    solution = "opendevsecops"
-  }
-}
-
-# depends_on workaround
-
-variable "depends_on" {
-  description = "Helper variable to simulate depends_on for terraform modules"
-  default     = []
 }

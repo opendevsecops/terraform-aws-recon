@@ -24,17 +24,10 @@ variable "cluster_arn" {}
 
 variable "cluster_vpc_subnet_id" {}
 
+variable "public_ip" {
+  default = false
+}
+
 variable "common_prefix" {
   default = "opendevsecops_"
-}
-
-variable "tags" {
-  default = {}
-}
-
-# depends_on workaround
-
-variable "depends_on" {
-  description = "Helper variable to simulate depends_on for terraform modules"
-  default     = []
 }

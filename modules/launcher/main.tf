@@ -9,6 +9,8 @@ locals {
   cluster_arn           = "${var.cluster_arn}"
   cluster_vpc_subnet_id = "${var.cluster_vpc_subnet_id}"
 
+  public_ip = "${var.public_ip}"
+
   common_prefix = "${var.common_prefix}"
 
   tags = "${var.tags}"
@@ -16,7 +18,7 @@ locals {
 
 module "roles" {
   source = "opendevsecops/ecs-cluster/aws//modules/roles"
-  source = "0.5.0"
+  source = "0.7.0"
 }
 
 resource "aws_iam_role_policy" "task_role_policy" {
@@ -63,6 +65,8 @@ module "main" {
   environment {
     CLUSTER_ARN           = "${local.cluster_arn}"
     CLUSTER_VPC_SUBNET_ID = "${local.cluster_vpc_subnet_id}"
+
+    PUBLIC_IP = "${local.public_ip ? "true" : "false"}"
 
     TASK_ROLE_ARN      = "${module.roles.task_role_arn}"
     EXECUTION_ROLE_ARN = "${module.roles.execution_role_arn}"

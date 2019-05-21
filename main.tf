@@ -11,6 +11,8 @@ locals {
   cluster_vpc_cidr_block        = "${var.cluster_vpc_cidr_block}"
   cluster_vpc_subnet_cidr_block = "${var.cluster_vpc_subnet_cidr_block}"
 
+  public_ip = "${var.public_ip}"
+
   common_prefix = "${var.common_prefix}"
 
   tags = "${var.tags}"
@@ -18,9 +20,10 @@ locals {
 
 module "cluster" {
   source = "opendevsecops/ecs-cluster/aws"
-  source = "0.5.0"
+  source = "0.7.0"
 
-  name                  = "${local.common_prefix}recon_cluster"
+  name = "${local.common_prefix}recon_cluster"
+
   vpc_cidr_block        = "${local.cluster_vpc_cidr_block}"
   vpc_subnet_cidr_block = "${local.cluster_vpc_subnet_cidr_block}"
 }
@@ -40,7 +43,9 @@ module "main" {
   cluster_arn           = "${module.cluster.arn}"
   cluster_vpc_subnet_id = "${module.cluster.vpc_subnet_id}"
 
-  common_prefix = "${var.common_prefix}"
+  public_ip = "${local.public_ip}"
+
+  common_prefix = "${local.common_prefix}"
 
   tags = "${local.tags}"
 }

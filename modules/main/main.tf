@@ -11,6 +11,8 @@ locals {
   cluster_arn           = "${var.cluster_arn}"
   cluster_vpc_subnet_id = "${var.cluster_vpc_subnet_id}"
 
+  public_ip = "${var.public_ip}"
+
   common_prefix = "${var.common_prefix}"
 
   tags = "${var.tags}"
@@ -18,7 +20,7 @@ locals {
 
 module "task" {
   source = "opendevsecops/ecs-task/aws"
-  source = "0.0.3"
+  source = "0.1.1"
 
   name  = "${local.common_prefix}recon_runner"
   image = "${local.image}"
@@ -54,6 +56,8 @@ module "launcher" {
 
   cluster_arn           = "${local.cluster_arn}"
   cluster_vpc_subnet_id = "${local.cluster_vpc_subnet_id}"
+
+  public_ip = "${local.public_ip}"
 
   common_prefix = "${local.common_prefix}"
 

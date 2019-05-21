@@ -19,7 +19,7 @@ const launchTask = async(name, env) => {
                 subnets: [
                     process.env.CLUSTER_VPC_SUBNET_ID
                 ],
-                assignPublicIp: 'ENABLED'
+                assignPublicIp: process.env.PUBLIC_IP === 'true' ? 'ENABLED' : 'DISABLED'
             }
         },
 
